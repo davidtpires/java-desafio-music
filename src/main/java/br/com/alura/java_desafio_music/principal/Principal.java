@@ -1,9 +1,19 @@
 package br.com.alura.java_desafio_music.principal;
 
+import br.com.alura.java_desafio_music.model.Artista;
+import br.com.alura.java_desafio_music.repository.ArtistaRepository;
+
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Principal {
     private Scanner leitura = new Scanner(System.in);
+
+    private ArtistaRepository repositorio;
+
+    public Principal(ArtistaRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
 
     public void exibeMenu() {
@@ -51,7 +61,20 @@ public class Principal {
     }
 
     private void cadastrarArtistas(){
-        System.out.println("Em desenvolvimento...");
+        System.out.println("*** Cadastro de Artista ***");
+        System.out.println("Informe o nome do artista: ");
+        var nome = leitura.nextLine();
+        System.out.println("Informe o tipo de artista (banda/dupla/solo: ");
+        var tipoArtista = leitura.nextLine();
+        System.out.println("Informe o gênero musical:");
+        var generoMusical = leitura.nextLine();
+        System.out.println("Informe a nacionalidade");
+        var nacionalidade = leitura.nextLine();
+
+        Artista artista = new Artista(nome, tipoArtista, generoMusical, nacionalidade);
+        repositorio.save(artista);
+        System.out.println("Artista salvo com sucesso!");
+        System.out.println(artista);
     }
 
     private void cadastrarMusicas(){

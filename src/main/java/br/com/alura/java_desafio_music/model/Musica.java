@@ -1,14 +1,21 @@
 package br.com.alura.java_desafio_music.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "musicas")
 public class Musica {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String titulo;
     private String genero;
     private int duracao;
     private LocalDate dataLancamento;
     private String album;
+    @ManyToOne
     private Artista artista;
 
     public Musica() {}
@@ -20,6 +27,14 @@ public class Musica {
         this.dataLancamento = dataLancamento;
         this.album = album;
         this.artista = artista;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitulo() {
