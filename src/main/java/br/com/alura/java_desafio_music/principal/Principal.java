@@ -3,6 +3,7 @@ package br.com.alura.java_desafio_music.principal;
 import br.com.alura.java_desafio_music.model.Artista;
 import br.com.alura.java_desafio_music.model.Musica;
 import br.com.alura.java_desafio_music.repository.ArtistaRepository;
+import br.com.alura.java_desafio_music.service.ConsultaChatGPT;
 
 import java.sql.SQLOutput;
 import java.time.LocalDate;
@@ -127,7 +128,7 @@ public class Principal {
     }
 
     private void buscarMusicasPorArtistas(){
-        System.out.println("*** Cadastro de Musica ***");
+        System.out.println("*** Busca de Musica Por Artista ***");
         System.out.println("Escolha o artista pelo nome:");
         var nomeArtista = leitura.nextLine();
 
@@ -140,15 +141,24 @@ public class Principal {
                     System.out.printf("Título: %s Duração: %sseg Data Lançamento: %s Album: %s Artista: %s\n",
                             m.getTitulo(), m.getDuracao(), m.getDataLancamento(), m.getAlbum(), m.getArtista().getNome())
             );
-
-
         } else {
             System.out.println("Artista não encontrado!");
         }
     }
 
     private void pesquisarDadosArtista(){
-        System.out.println("Em desenvolvimento...");
+        System.out.println("*** Busca de Musica Por Artista ***");
+        System.out.println("Escolha o artista pelo nome:");
+        var nomeArtista = leitura.nextLine();
+
+        artistaBuscado = repositorio.findByNomeContainingIgnoreCase(nomeArtista);
+
+        if (artistaBuscado.isPresent()) {
+            var resultado = ConsultaChatGPT.obterBiografia(artistaBuscado.get().getNome());
+            System.out.println(artistaBuscado.get().getNome()+ resultado);
+        }else {
+            System.out.println("Artista não encontrado!");
+        }
     }
 
 }
