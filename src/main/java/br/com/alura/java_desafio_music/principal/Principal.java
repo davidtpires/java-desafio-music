@@ -17,6 +17,7 @@ public class Principal {
     private Scanner leitura = new Scanner(System.in);
 
     private ArtistaRepository repositorio;
+    private Optional<Artista> artistaBuscado;
 
     public Principal(ArtistaRepository repositorio) {
         this.repositorio = repositorio;
@@ -89,11 +90,11 @@ public class Principal {
         System.out.println("Escolha o artista pelo nome:");
         var nomeArtista = leitura.nextLine();
 
-        Optional<Artista> artista = repositorio.findByNomeContainingIgnoreCase(nomeArtista);
+        artistaBuscado = repositorio.findByNomeContainingIgnoreCase(nomeArtista);
 
-        if (artista.isPresent()) {
-            System.out.println("Artista: " + artista);
-            var artistaEncontrado = artista.get();
+        if (artistaBuscado.isPresent()) {
+            System.out.println("Artista: " + artistaBuscado);
+            var artistaEncontrado = artistaBuscado.get();
 
             System.out.println("Informe o nome da musica:");
             var titulo = leitura.nextLine();
@@ -126,7 +127,24 @@ public class Principal {
     }
 
     private void buscarMusicasPorArtistas(){
-        System.out.println("Em desenvolvimento...");
+        System.out.println("*** Cadastro de Musica ***");
+        System.out.println("Escolha o artista pelo nome:");
+        var nomeArtista = leitura.nextLine();
+
+        artistaBuscado = repositorio.findByNomeContainingIgnoreCase(nomeArtista);
+
+        if (artistaBuscado.isPresent()) {
+            var artistaEncontrado = artistaBuscado.get();
+            List<Musica> musicasEncontradas = repositorio.musicasPorAtista(artistaEncontrado);
+            musicasEncontradas.forEach(m ->
+                    System.out.printf("Título: %s Duração: %sseg Data Lançamento: %s Album: %s Artista: %s\n",
+                            m.getTitulo(), m.getDuracao(), m.getDataLancamento(), m.getAlbum(), m.getArtista().getNome())
+            );
+
+
+        } else {
+            System.out.println("Artista não encontrado!");
+        }
     }
 
     private void pesquisarDadosArtista(){

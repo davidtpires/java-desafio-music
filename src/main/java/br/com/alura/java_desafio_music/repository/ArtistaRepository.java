@@ -14,4 +14,6 @@ public interface ArtistaRepository extends JpaRepository<Artista, Long> {
     @Query("Select m FROM Artista a JOIN a.musicas m")
     List<Musica> listaMusicas();
 
+    @Query("Select m FROM Artista a JOIN a.musicas m WHERE a = :artistaEncontrado" )
+    List<Musica> musicasPorAtista(Artista artistaEncontrado);
 }
