@@ -110,6 +110,7 @@ public class Principal {
             musicas.add(musica);
             artistaEncontrado.setMusicas(musicas);
             repositorio.save(artistaEncontrado);
+            System.out.println("Música cadastrada com sucesso!");
 
         } else {
             System.out.println("Artista não encontrado!");
@@ -117,7 +118,11 @@ public class Principal {
     }
 
     private void listarMusicas(){
-        System.out.println("Em desenvolvimento...");
+        List<Musica> musicasEncontradas = repositorio.listaMusicas();
+        musicasEncontradas.forEach(m ->
+                System.out.printf("Título: %s Duração: %sseg Data Lançamento: %s Album: %s Artista: %s\n",
+                        m.getTitulo(), m.getDuracao(), m.getDataLancamento(), m.getAlbum(), m.getArtista().getNome())
+                );
     }
 
     private void buscarMusicasPorArtistas(){

@@ -88,7 +88,6 @@ public class Musica {
         return "titulo='" + titulo + '\'' +
                 ", duracao=" + duracao +
                 ", dataLancamento=" + dataLancamento +
-                ", album='" + album + '\'' +
-                ", artista=" + artista ;
+                ", album='" + album + '\'' ;
     }
 }
