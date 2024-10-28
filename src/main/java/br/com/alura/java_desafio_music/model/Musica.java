@@ -3,6 +3,8 @@ package br.com.alura.java_desafio_music.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Entity
 @Table(name = "musicas")
@@ -11,20 +13,24 @@ public class Musica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
-    private String genero;
     private int duracao;
     private LocalDate dataLancamento;
     private String album;
     @ManyToOne
     private Artista artista;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Musica() {}
 
-    public Musica(String titulo, String genero, int duracao, LocalDate dataLancamento, String album, Artista artista) {
+    public Musica(String titulo, int duracao, String dataLancamento, String album, Artista artista) {
         this.titulo = titulo;
-        this.genero = genero;
         this.duracao = duracao;
-        this.dataLancamento = dataLancamento;
+        try {
+            LocalDate data = LocalDate.parse(dataLancamento, FORMATTER);
+            this.dataLancamento = data;
+        } catch (DateTimeParseException ex) {
+            this.dataLancamento = null;
+        }
         this.album = album;
         this.artista = artista;
     }
@@ -43,14 +49,6 @@ public class Musica {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
     }
 
     public int getDuracao() {
@@ -88,7 +86,6 @@ public class Musica {
     @Override
     public String toString() {
         return "titulo='" + titulo + '\'' +
-                ", genero='" + genero + '\'' +
                 ", duracao=" + duracao +
                 ", dataLancamento=" + dataLancamento +
                 ", album='" + album + '\'' +
